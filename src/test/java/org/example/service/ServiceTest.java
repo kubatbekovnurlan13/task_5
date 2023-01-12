@@ -1,26 +1,39 @@
 package org.example.service;
 
-import org.example.output.Printer;
 import org.example.reader.Reader;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTest {
+    private final String pathEnd = "src/test/files/endTest.log";
+    private final String pathStart = "src/test/files/startTest.log";
+    private final String pathNoValue = "src/test/files/noValueFileTest.log";
+    private final String pathAbbreviation = "src/test/files/abbreviationsTest.txt";
+
+
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenThereIsSomeValue() {
+    void getNameAndTime_testGetNameAndTime_whenThereIsSomeValue() {
         Reader reader = new Reader();
-        List<String> start = reader.readFile("src/test/files/startValues.log");
-        List<String> end = reader.readFile("src/test/files/endValues.log");
-        List<String> abb = reader.readFile("src/test/files/abbreviationsValues.txt");
+        List<String> start;
+        List<String> end;
+        List<String> abb;
+        try {
+            start = reader.readFile(pathStart);
+            end = reader.readFile(pathEnd);
+            abb = reader.readFile(pathAbbreviation);
 
-        Service service = new Service(start,end,abb);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        List<String> actual = service.getAbbreviationNameAndTimeResult();
+        Service service = new Service(start, end, abb);
+
+        List<String> actual = service.getNameAndTime();
 
         List<String> expected = List.of(
                 "Brendon Hartley_SCUDERIA TORO ROSSO HONDA@01:13.179%73179",
@@ -46,95 +59,100 @@ public class ServiceTest {
     }
 
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenFirstValueIsNull() {
+    void getNameAndTime_testGetNameAndTime_whenFirstValueIsNull() {
         Exception exception = assertThrows(NullPointerException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = null;
-                    List<String> end = reader.readFile("src/test/files/endValues.log");
-                    List<String> abb = reader.readFile("src/test/files/abbreviationsValues.txt");
+                    List<String> end = reader.readFile(pathEnd);
+                    List<String> abb = reader.readFile(pathAbbreviation);
 
-                    Service service = new Service(start,end,abb);
+                    Service service = new Service(null, end, abb);
 
-                    List<String> actual = service.getAbbreviationNameAndTimeResult();
+                    service.getNameAndTime();
                 });
         assertEquals("Cannot invoke \"java.util.List.stream()\" because \"this.start\" is null", exception.getMessage());
     }
 
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenSecondValueIsNull() {
+    void getNameAndTime_testGetNameAndTime_whenSecondValueIsNull() {
         Exception exception = assertThrows(NullPointerException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile("src/test/files/startValues.log");
-                    List<String> end = null;
-                    List<String> abb = reader.readFile("src/test/files/abbreviationsValues.txt");
+                    List<String> start = reader.readFile(pathStart);
+                    List<String> abb = reader.readFile(pathAbbreviation);
 
-                    Service service = new Service(start,end,abb);
+                    Service service = new Service(start, null, abb);
 
-                    List<String> actual = service.getAbbreviationNameAndTimeResult();
+                    service.getNameAndTime();
                 });
         assertEquals("Cannot invoke \"java.util.List.stream()\" because \"this.end\" is null", exception.getMessage());
     }
 
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenThirdValueIsNull() {
+    void getNameAndTime_testGetNameAndTime_whenThirdValueIsNull() {
         Exception exception = assertThrows(NullPointerException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile("src/test/files/startValues.log");
-                    List<String> end = reader.readFile("src/test/files/endValues.log");
-                    List<String> abb = null;
+                    List<String> start = reader.readFile(pathStart);
+                    List<String> end = reader.readFile(pathEnd);
 
-                    Service service = new Service(start,end,abb);
+                    Service service = new Service(start, end, null);
 
-                    List<String> actual = service.getAbbreviationNameAndTimeResult();
+                    service.getNameAndTime();
                 });
         assertEquals("Cannot invoke \"java.util.List.stream()\" because \"this.abbreviations\" is null", exception.getMessage());
     }
 
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenThereIsNoValueInThirdInput() {
+    void getNameAndTime_testGetNameAndTime_whenThereIsNoValueInThirdInput() {
         Exception exception = assertThrows(ArrayIndexOutOfBoundsException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile("src/test/files/startValues.log");
-                    List<String> end = reader.readFile("src/test/files/endValues.log");
-                    List<String> abb = reader.readFile("src/test/files/noValues.log");
+                    List<String> start = reader.readFile(pathStart);
+                    List<String> end = reader.readFile(pathEnd);
+                    List<String> abb = reader.readFile(pathNoValue);
 
-                    Service service = new Service(start,end,abb);
+                    Service service = new Service(start, end, abb);
 
-                    List<String> actual = service.getAbbreviationNameAndTimeResult();
+                    service.getNameAndTime();
                 });
         assertEquals("Index 0 out of bounds for length 0", exception.getMessage());
     }
 
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenThereIsNoValueInSecondInput() {
+    void getNameAndTime_testGetNameAndTime_whenThereIsNoValueInSecondInput() {
         Exception exception = assertThrows(ArrayIndexOutOfBoundsException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile("src/test/files/startValues.log");
-                    List<String> end = reader.readFile("src/test/files/noValues.log");
-                    List<String> abb = reader.readFile("src/test/files/abbreviationsValues.txt");
+                    List<String> start = reader.readFile(pathStart);
+                    List<String> end = reader.readFile(pathNoValue);
+                    List<String> abb = reader.readFile(pathAbbreviation);
 
-                    Service service = new Service(start,end,abb);
+                    Service service = new Service(start, end, abb);
 
-                    List<String> actual = service.getAbbreviationNameAndTimeResult();
+                    service.getNameAndTime();
                 });
         assertEquals("Index 0 out of bounds for length 0", exception.getMessage());
     }
 
     @Test
-    void getAbbreviationNameAndTimeResult_testGetAbbreviationNameAndTimeResult_whenThereIsNoValueInFirstInput() {
+    void getNameAndTime_testGetNameAndTime_whenThereIsNoValueInFirstInput() {
         Reader reader = new Reader();
-        List<String> start = reader.readFile("src/test/files/noValues.log");
-        List<String> end = reader.readFile("src/test/files/endValues.log");
-        List<String> abb = reader.readFile("src/test/files/abbreviationsValues.txt");
+        List<String> start;
+        List<String> end;
+        List<String> abb;
+        try {
+            start = reader.readFile(pathNoValue);
+            end = reader.readFile(pathEnd);
+            abb = reader.readFile(pathAbbreviation);
 
-        Service service = new Service(start,end,abb);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        List<String> actual = service.getAbbreviationNameAndTimeResult();
+        Service service = new Service(start, end, abb);
+
+        List<String> actual = service.getNameAndTime();
 
         List<String> expected = new ArrayList<>();
         assertEquals(expected, actual);

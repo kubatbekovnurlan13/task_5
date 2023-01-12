@@ -2,17 +2,25 @@ package org.example.reader;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ReaderTest {
+
     @Test
     void readFile_testReadFile_whenAddressInput() {
         Reader reader = new Reader();
-        List<String> actual = reader.readFile("src/test/files/startValues.log");
+        List<String> actual;
+        try {
+            String start = "src/test/files/startTest.log";
+            actual = reader.readFile(start);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         List<String> expected = List.of(
                 "SVF2018-05-24_12:02:58.917",
@@ -39,16 +47,25 @@ public class ReaderTest {
 
     @Test
     void readFile_testReadFile_whenWrongAddressInput() {
-        Reader reader = new Reader();
-        List<String> actual = reader.readFile("wrong_address");
+        Exception exception = assertThrows(FileNotFoundException.class,
+                () -> {
+                    Reader reader = new Reader();
+                    reader.readFile("wrong_address");
+                });
+        assertEquals("wrong_address (No such file or directory)", exception.getMessage());
 
-        assertNull(actual);
     }
 
     @Test
     void readFile_testReadFile_whenThereIsNoValue() {
         Reader reader = new Reader();
-        List<String> actual = reader.readFile("src/test/files/noValues.log");
+        List<String> actual;
+        try {
+            String noValue = "src/test/files/noValueFileTest.log";
+            actual = reader.readFile(noValue);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         List<String> expected = new ArrayList<>();
         assertEquals(expected, actual);

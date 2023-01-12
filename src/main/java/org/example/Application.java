@@ -4,6 +4,7 @@ import org.example.output.Printer;
 import org.example.reader.Reader;
 import org.example.service.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Application {
@@ -13,16 +14,27 @@ public class Application {
 
     private static void app() {
         Reader reader = new Reader();
-        List<String> start = reader.readFile("src/main/files/start.log");
-        List<String> end = reader.readFile("src/main/files/end.log");
-        List<String> abb = reader.readFile("src/main/files/abbreviations.txt");
+        String pathStart = "src/main/files/start.log";
+        String pathEnd = "src/main/files/end.log";
+        String pathAbbreviation = "src/main/files/abbreviations.txt";
+        List<String> start;
+        List<String> end;
+        List<String> abb;
+
+        try {
+            start = reader.readFile(pathStart);
+            end = reader.readFile(pathEnd);
+            abb = reader.readFile(pathAbbreviation);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Service service = new Service(start, end, abb);
 
-        List<String> abbreviationNameAndTimeResult = service.getAbbreviationNameAndTimeResult();
+        List<String> nameAndTime = service.getNameAndTime();
 
         Printer printer = new Printer();
-        String result = printer.printResult(abbreviationNameAndTimeResult);
+        String result = printer.printResult(nameAndTime);
 
         System.out.println(result);
     }

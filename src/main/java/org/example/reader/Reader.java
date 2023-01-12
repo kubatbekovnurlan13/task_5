@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Reader {
-    public List<String> readFile(String path) {
+    public List<String> readFile(String path) throws IOException {
 
         try (FileReader reader = new FileReader(path)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -22,8 +22,7 @@ public class Reader {
 
             return all;
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            return null;
+            throw ex;
         }
     }
 }

@@ -10,8 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PrinterTest {
     @Test
     void printResult_testPrintResult_whenSomeValueInput() {
-
-
         List<String> abbreviationNameAndTimeResult = List.of(
                 "Brendon Hartley_SCUDERIA TORO ROSSO HONDA@01:13.179%73179",
                 "Charles Leclerc_SAUBER FERRARI@01:12.829%72829",
@@ -52,7 +50,7 @@ public class PrinterTest {
                         12    Pierre Gasly         |SCUDERIA TORO ROSSO HONDA      |01:12.941\s
                         13    Carlos Sainz         |RENAULT                        |01:12.950\s
                         14    Esteban Ocon         |FORCE INDIA MERCEDES           |01:13.28 \s
-                        ---------------------------------------------------------------------\s
+                        ----------------------------------------------------------------------
                         15    Nico Hulkenberg      |RENAULT                        |01:13.65 \s
                         16    Brendon Hartley      |SCUDERIA TORO ROSSO HONDA      |01:13.179\s
                         17    Marcus Ericsson      |SAUBER FERRARI                 |01:13.265\s
@@ -69,6 +67,6 @@ public class PrinterTest {
                     Printer printer = new Printer();
                     printer.printResult(null);
                 });
-        assertEquals("Cannot invoke \"java.util.List.iterator()\" because \"abbreviationNameAndTimeResult\" is null", exception.getMessage());
+        assertEquals("Cannot invoke \"java.util.List.iterator()\" because \"nameAndTime\" is null", exception.getMessage());
     }
 }
