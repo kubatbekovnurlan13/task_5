@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.pathReader.PathReader;
 import org.example.reader.Reader;
 import org.junit.jupiter.api.Test;
 
@@ -10,11 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTest {
-    private final String pathEnd = "src/test/files/endTest.log";
-    private final String pathStart = "src/test/files/startTest.log";
-    private final String pathNoValue = "src/test/files/noValueFileTest.log";
-    private final String pathAbbreviation = "src/test/files/abbreviationsTest.txt";
-
+    private final PathReader pathReader = new PathReader();
 
     @Test
     void getNameAndTime_testGetNameAndTime_whenThereIsSomeValue() {
@@ -23,9 +20,9 @@ public class ServiceTest {
         List<String> end;
         List<String> abb;
         try {
-            start = reader.readFile(pathStart);
-            end = reader.readFile(pathEnd);
-            abb = reader.readFile(pathAbbreviation);
+            start = reader.readFile(pathReader.getStart());
+            end = reader.readFile(pathReader.getEnd());
+            abb = reader.readFile(pathReader.getAbbreviation());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -63,8 +60,8 @@ public class ServiceTest {
         Exception exception = assertThrows(NullPointerException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> end = reader.readFile(pathEnd);
-                    List<String> abb = reader.readFile(pathAbbreviation);
+                    List<String> end = reader.readFile(pathReader.getEnd());
+                    List<String> abb = reader.readFile(pathReader.getAbbreviation());
 
                     Service service = new Service(null, end, abb);
 
@@ -78,8 +75,8 @@ public class ServiceTest {
         Exception exception = assertThrows(NullPointerException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile(pathStart);
-                    List<String> abb = reader.readFile(pathAbbreviation);
+                    List<String> start = reader.readFile(pathReader.getStart());
+                    List<String> abb = reader.readFile(pathReader.getAbbreviation());
 
                     Service service = new Service(start, null, abb);
 
@@ -93,8 +90,8 @@ public class ServiceTest {
         Exception exception = assertThrows(NullPointerException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile(pathStart);
-                    List<String> end = reader.readFile(pathEnd);
+                    List<String> start = reader.readFile(pathReader.getStart());
+                    List<String> end = reader.readFile(pathReader.getEnd());
 
                     Service service = new Service(start, end, null);
 
@@ -108,9 +105,9 @@ public class ServiceTest {
         Exception exception = assertThrows(ArrayIndexOutOfBoundsException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile(pathStart);
-                    List<String> end = reader.readFile(pathEnd);
-                    List<String> abb = reader.readFile(pathNoValue);
+                    List<String> start = reader.readFile(pathReader.getStart());
+                    List<String> end = reader.readFile(pathReader.getEnd());
+                    List<String> abb = reader.readFile(pathReader.getNoValueFile());
 
                     Service service = new Service(start, end, abb);
 
@@ -124,9 +121,9 @@ public class ServiceTest {
         Exception exception = assertThrows(ArrayIndexOutOfBoundsException.class,
                 () -> {
                     Reader reader = new Reader();
-                    List<String> start = reader.readFile(pathStart);
-                    List<String> end = reader.readFile(pathNoValue);
-                    List<String> abb = reader.readFile(pathAbbreviation);
+                    List<String> start = reader.readFile(pathReader.getStart());
+                    List<String> end = reader.readFile(pathReader.getNoValueFile());
+                    List<String> abb = reader.readFile(pathReader.getAbbreviation());
 
                     Service service = new Service(start, end, abb);
 
@@ -142,9 +139,9 @@ public class ServiceTest {
         List<String> end;
         List<String> abb;
         try {
-            start = reader.readFile(pathNoValue);
-            end = reader.readFile(pathEnd);
-            abb = reader.readFile(pathAbbreviation);
+            start = reader.readFile(pathReader.getNoValueFile());
+            end = reader.readFile(pathReader.getEnd());
+            abb = reader.readFile(pathReader.getAbbreviation());
 
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -4,8 +4,12 @@ import org.example.output.Printer;
 import org.example.reader.Reader;
 import org.example.service.Service;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class Application {
     public static void main(String[] args) {
@@ -14,9 +18,10 @@ public class Application {
 
     private static void app() {
         Reader reader = new Reader();
-        String pathStart = "src/main/files/start.log";
-        String pathEnd = "src/main/files/end.log";
-        String pathAbbreviation = "src/main/files/abbreviations.txt";
+
+        String pathStart = getPath().get("start");
+        String pathEnd =  getPath().get("end");
+        String pathAbbreviation =  getPath().get("abbreviation");
         List<String> start;
         List<String> end;
         List<String> abb;
@@ -29,13 +34,28 @@ public class Application {
             throw new RuntimeException(e);
         }
 
-        Service service = new Service(start, end, abb);
+        List<String> nameAndTime = new Service(start, end, abb).getNameAndTime();
 
-        List<String> nameAndTime = service.getNameAndTime();
-
-        Printer printer = new Printer();
-        String result = printer.printResult(nameAndTime);
+        String result = new Printer().printResult(nameAndTime);
 
         System.out.println(result);
+    }
+
+    private static HashMap<String, String> getPath() {
+        HashMap<String, String> paths = new HashMap<>();
+
+        try (InputStream input = new FileInputStream("src/main/resources/files.properties")) {
+
+            Properties prop = new Properties();
+
+            prop.load(input);
+
+            paths.put("start", prop.getProperty("start.file"));
+            paths.put("end", prop.getProperty("end.file"));
+            paths.put("abbreviation", prop.getProperty("abbreviation.file"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return paths;
     }
 }

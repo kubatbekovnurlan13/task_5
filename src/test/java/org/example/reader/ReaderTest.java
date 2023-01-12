@@ -1,5 +1,6 @@
 package org.example.reader;
 
+import org.example.pathReader.PathReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
@@ -11,12 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ReaderTest {
 
+    private final PathReader pathReader = new PathReader();
+
     @Test
     void readFile_testReadFile_whenAddressInput() {
         Reader reader = new Reader();
         List<String> actual;
         try {
-            String start = "src/test/files/startTest.log";
+            String start = pathReader.getStart();
             actual = reader.readFile(start);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -61,7 +64,7 @@ public class ReaderTest {
         Reader reader = new Reader();
         List<String> actual;
         try {
-            String noValue = "src/test/files/noValueFileTest.log";
+            String noValue = pathReader.getNoValueFile();
             actual = reader.readFile(noValue);
         } catch (IOException e) {
             throw new RuntimeException(e);
