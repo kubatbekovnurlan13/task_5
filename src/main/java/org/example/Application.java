@@ -13,9 +13,9 @@ public class Application {
 
     private static void app() {
         Reader reader = new Reader();
-        List<String> start = reader.readFile("start.log");
-        List<String> end = reader.readFile("end.log");
-        List<String> abb = reader.readFile("abbreviations.txt");
+        List<String> start = reader.readFile("src/main/files/start.log");
+        List<String> end = reader.readFile("src/main/files/end.log");
+        List<String> abb = reader.readFile("src/main/files/abbreviations.txt");
 
         Service service = new Service(start, end, abb);
 
