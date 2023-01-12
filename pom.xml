@@ -12,7 +12,7 @@
   <properties>
     <junit.version>4.13.2</junit.version>
     <junit-jupiter.version>5.9.0</junit-jupiter.version>
-    <mockito-junit-jupiter.version>4.10.0</mockito-junit-jupiter.version>
+    <mockito-junit-jupiter.version>4.11.0</mockito-junit-jupiter.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>

@@ -21,7 +21,7 @@ public class Printer {
     }
 
     private String makeLineForPrinting(String value, int index) {
-        String sample = "%-5s %-20s |%-30s |%-15s \n";
+        String sample = "%-5s %-20s |%-30s |%-10s\n";
 
         String[] nameCarTime = value.split("_");
         String name = nameCarTime[0];

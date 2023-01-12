@@ -25,6 +25,5 @@ public class Application {
         String result = printer.printResult(abbreviationNameAndTimeResult);
 
         System.out.println(result);
-
     }
 }
