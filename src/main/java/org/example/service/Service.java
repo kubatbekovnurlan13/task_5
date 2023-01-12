@@ -16,6 +16,7 @@ public class Service {
         this.end = end;
         this.abbreviations = abbreviations;
     }
+
     public List<String> getNameAndTime() {
         return getAbbreviationAndDifferenceInTime().map(
                 abbreviationAndDifferenceInTime -> {
@@ -55,7 +56,21 @@ public class Service {
         long second = (differenceInMillis / 1000) % 60;
         long minute = (differenceInMillis / (1000 * 60)) % 60;
 
-        return String.format("%02d:%02d.%d", minute, second, millis) + "%" + differenceInMillis;
+        String millisString = makeRightMillis(millis);
+
+        return String.format("%02d:%02d.%s", minute, second, millisString) + "%" + differenceInMillis;
+    }
+
+    private String makeRightMillis(long millis) {
+        String result;
+        if (String.valueOf(millis).length() == 1) {
+            result = "00"+millis;
+        } else if (String.valueOf(millis).length() == 2) {
+            result = "0"+millis;
+        }else{
+            result = String.valueOf(millis);
+        }
+        return result;
     }
 
     private String getTime(String value) {
