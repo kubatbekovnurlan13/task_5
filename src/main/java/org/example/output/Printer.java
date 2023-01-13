@@ -53,8 +53,11 @@ public class Printer {
     }
 
     private List<Map.Entry<String, Integer>> sortByMillisecond(HashMap<String, Integer> mapOfMillisecondsAndValue) {
+        long limiter = 3540000;
         return mapOfMillisecondsAndValue.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue()).toList();
+                .sorted(Map.Entry.comparingByValue())
+                .filter(x -> x.getValue() < limiter)
+                .toList();
     }
 
     private HashMap<String, Integer> makeMap(List<String> nameAndTime) {
