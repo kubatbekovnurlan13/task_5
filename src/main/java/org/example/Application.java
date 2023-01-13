@@ -20,8 +20,8 @@ public class Application {
         Reader reader = new Reader();
 
         String pathStart = getPath().get("start");
-        String pathEnd =  getPath().get("end");
-        String pathAbbreviation =  getPath().get("abbreviation");
+        String pathEnd = getPath().get("end");
+        String pathAbbreviation = getPath().get("abbreviation");
         List<String> start;
         List<String> end;
         List<String> abb;
@@ -35,7 +35,7 @@ public class Application {
         }
 
         List<String> nameAndTime = new Service(start, end, abb).getNameAndTime();
-
+        
         String result = new Printer().printResult(nameAndTime);
 
         System.out.println(result);
